@@ -14,6 +14,10 @@ const subjectResultSchema  = mongoose.Schema({
         type: Number,
         required : true
     },
+    subGP : {
+        type : Number,
+        required : true
+    },
     grade : {
         type :String,
         required : true

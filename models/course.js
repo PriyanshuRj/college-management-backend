@@ -29,4 +29,4 @@ const courseSchema = mongoose.Schema({
 })
 
 const Course = mongoose.model("Course", courseSchema);
-module.require = Course;
+module.exports = Course;

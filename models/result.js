@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const resultSchema = mongoose.Schema({
     student : {
-        type : mongoose.Schema.ObjectId,
+        type : String,
         required : true
     },
     semesterResults : {
