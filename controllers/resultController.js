@@ -7,17 +7,32 @@ const csvtojson = require('csvtojson');
 const SemesterResult = require("../models/semesterResult");
 const getResult = async (req, res,next)=>{
 
-    console.log("reached", req.user);
-    const result =await Result.findOne({student : req.user.rollNo});
-    var semesterCompleteResult = [];
-    for(let semResult in result.semesterResults){
-        const semRes = await SemesterResult.findById(result.semesterResults[semResult]);
-        if(semRes){
-            semesterCompleteResult.push(semRes);
+    console.log("reached", req.body);
+
+    const {rollNo} = req.body;
+    if(rollNo){
+
+        const result = await Result.findOne({student : rollNo});
+        console.log(result)
+        if(result){
+            var semesterCompleteResult = [];
+            for(let semResult in result.semesterResults){
+                const semRes = await SemesterResult.findById(result.semesterResults[semResult]);
+                if(semRes){
+                    semesterCompleteResult.push(semRes);
+                }
+                else console.log("Result for this semester not found");
+            }
+            res.status(200).json({message : "This is your result", result : result, semesterCompleteResult : semesterCompleteResult})
         }
-        else console.log("Result for this semester not found");
+        else {
+            res.status(404).json({message : "Student Not found"});
+        }
     }
-    res.status(200).json({message : "This is your result", result : result})
+    else {
+        res.status(400).json({message : "Please provide a rooll Number"});
+    }
+    
 }
 const grades = [ "F", "F", "F", "F", "E","D", "C", "BC", "B", "AB", "A"]
 

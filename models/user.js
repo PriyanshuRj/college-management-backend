@@ -16,11 +16,6 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    rollNo : {
-        type :String,
-        required : true,
-        default : "20bcs001"
-    },
     verified : {
         type : Boolean,
         default : false
