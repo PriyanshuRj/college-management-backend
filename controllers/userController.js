@@ -2,6 +2,36 @@ const User = require("../models/user");
 const Otp = require("../models/otp");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const createStudents = async function (req, res, next) {
+  try {
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    console.log("this is body", req.body);
+    const { username, password, mobileNo, email } = req.body;
+    if (username && password && mobileNo && email) {
+      const foundUsers = await User.find({ email: email });
+      console.log(foundUsers);
+      if (foundUsers.length > 0) {
+        res.status(201).json({ message: "User with this email exists" });
+      } else {
+        const saltRounds = bcrypt.genSaltSync(10);
+        const encryptedPassword = await bcrypt.hash(password, saltRounds);
+        const newUser = await User.create({
+          email: email,
+          name: username,
+          password: encryptedPassword,
+          mobileno: mobileNo,
+        });
+        res
+          .status(201)
+          .json({ message: "User Created Successfully", user: newUser });
+      }
+    } else {
+      res.status(204).json({ message: "Fill complete details" });
+    }
+  } catch (error) {
+    console.error("The error is", error);
+  }
+}
 const signup = async function (req, res, next) {
   try {
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -56,4 +86,4 @@ const login = async function (req, res, next) {
   }
 };
 
-module.exports = { signup, login };
+module.exports = { signup, login, createStudents };
