@@ -25,6 +25,10 @@ const courseSchema = mongoose.Schema({
     credits : {
         type : Number,
         required : true
+    },
+    semester : {
+        type : Number,
+        required : false
     }
 })
 
